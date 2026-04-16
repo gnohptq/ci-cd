@@ -1,8 +1,7 @@
 name: Integration test
 on:
   push:
-    branches:
-      - [dev,stg]
+    branches: [dev,stg]
 jobs:
   integration-test:
     runs-on: ubuntu-latest
