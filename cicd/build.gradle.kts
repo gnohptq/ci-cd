@@ -2,6 +2,14 @@ plugins {
     kotlin("jvm") version "2.3.10"
     kotlin("plugin.allopen") version "2.3.10"
     id("io.quarkus")
+    id("org.sonarqube") version "7.2.3.7755"
+}
+
+sonar {
+    properties {
+        property("sonar.projectKey", "gnohptq_ci-cd")
+        property("sonar.organization", "gnohptq")
+    }
 }
 
 repositories {
