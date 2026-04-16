@@ -1,0 +1,33 @@
+name: Deploy-AWS
+on:
+  push:
+    branches: [main]
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+steps:
+  - uses: actions/checkout@v4
+
+  - uses: actions/setup-java@v4
+    with:
+      distribution: temurin
+      java-version: 17
+
+  - run: chmod +x gradlew
+
+  - name: Build app
+    run: ./gradew build
+
+  - name: Build image
+    run: docker build -t auth:${{ github.sha }} .
+
+  - name: Login to AWS ECR
+    run: |
+      aws ecr get-login-password --region ap-southeast-1 \
+      | docker login --username AWS --password-stdin gnohp.dkr.ecr.ap-southeast-1.amazonaws.com
+
+  - name: Push image
+    run: |
+      docker tag auth:latest auth-ecr:latest
+      docker push auth-ecr:latest
